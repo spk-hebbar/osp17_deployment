@@ -1,0 +1,87 @@
+- name: InternalApi
+  name_lower: internal_api
+  vip: true
+  mtu: 1500
+  ipv6: false
+  subnets:
+    internal_api_edge0:
+      vlan: 112
+      ip_subnet: 172.17.1.0/24
+      allocation_pools:
+      - start: 172.17.1.10
+        end: 172.17.1.250
+      gateway_ip: 172.17.1.254
+    internal_api_subnet:
+      vlan: 102
+      ip_subnet: 172.17.0.0/24
+      allocation_pools:
+      - start: 172.17.0.10
+        end: 172.17.0.200
+      gateway_ip: 172.17.0.1
+- name: Tenant
+  name_lower: tenant
+  vip: false
+  mtu: 1500
+  ipv6: false
+  subnets:
+    tenant_edge0:
+      vlan: 113
+      ip_subnet: 172.18.1.0/24
+      allocation_pools:
+      - start: 172.18.1.10
+        end: 172.18.1.250
+      gateway_ip: 172.18.1.254
+    tenant_subnet:
+      vlan: 103
+      ip_subnet: 172.18.0.0/24
+      allocation_pools:
+      - start: 172.18.0.10
+        end: 172.18.0.200
+      gateway_ip: 172.18.0.1
+- name: External
+  name_lower: external
+  vip: true
+  mtu: 1500
+  ipv6: false
+  subnets:
+    external_subnet:
+      vlan: 106
+      ip_subnet: 172.22.0.0/24
+      allocation_pools:
+      - start: 172.22.0.100
+        end: 172.22.0.129
+      gateway_ip: 172.22.0.1
+- name: Storage
+  name_lower: storage
+  vip: true
+  mtu: 1500
+  ipv6: false
+  subnets:
+    storage_edge0:
+      vlan: 114
+      ip_subnet: 172.19.1.0/24
+      allocation_pools:
+      - start: 172.19.1.10
+        end: 172.19.1.250
+      gateway_ip: 172.19.1.254
+    storage_subnet:
+      vlan: 104
+      ip_subnet: 172.19.0.0/24
+      allocation_pools:
+      - start: 172.19.0.10
+        end: 172.19.0.200
+      gateway_ip: 172.19.0.1
+- name: StorageMgmt
+  name_lower: storage_mgmt
+  vip: true
+  mtu: 1500
+  ipv6: false
+  subnets:
+    storage_mgmt_subnet:
+      vlan: 105
+      ip_subnet: 172.20.0.0/24
+      allocation_pools:
+      - start: 172.20.0.10
+        end: 172.20.0.200
+      gateway_ip: 172.20.0.1
+

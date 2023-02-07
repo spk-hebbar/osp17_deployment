@@ -1,0 +1,57 @@
+{
+    "nodes": [
+      {
+    "arch": "x86_64",
+    "cpu": "1",
+    "disk": "40",
+    "mac": [
+        "E4:43:4B:4D:ED:B9"
+    ],
+     "capabilities":
+     {
+         "boot_mode":"bios",
+	 "boot_option":"local"
+     },
+    "memory": "4096",
+    "name": "compute-0",
+    "pm_addr": "10.9.20.139",
+    "pm_password": "calvin",
+    "pm_type": "ipmi",
+    "pm_user": "root"
+},        {
+    "arch": "x86_64",
+    "cpu": "1",
+    "disk": "40",
+    "capabilities":
+    {
+        "boot_mode":"bios",
+        "boot_option":"local"
+    },
+    "mac": [
+        "E4:43:4B:4D:D4:CB"
+    ],
+    "memory": "4096",
+    "name": "compute-1",
+    "pm_addr": "10.9.20.140",
+    "pm_password": "calvin",
+    "pm_type": "ipmi",
+    "pm_user": "root"
+}      ,    {
+      "name": "controller-0",
+                  "ports": [{"address": "52:54:00:9c:f6:b0", "local_link_connection": {"switch_id": "52:54:00:00:00:00", "port_id": "1"}}],
+            "cpu": "4",
+      "memory": "10240",
+      "disk": "64",
+            "arch": "x86_64",
+              "pm_addr": "172.22.0.1",
+        "pm_type": "ipmi",
+        "pm_user": "admin",
+        "pm_password": "password",
+        "pm_port": "6232"
+                   , "capabilities":
+        {
+                      "profile":"control"
+                  }
+          }
+         ]
+}

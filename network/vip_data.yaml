@@ -1,0 +1,18 @@
+- network: storage_mgmt
+  subnet: storage_mgmt_subnet
+  dns_name: overcloud
+- network: internal_api
+  subnet: internal_api_subnet
+  dns_name: overcloud
+- network: storage
+  subnet: storage_subnet
+  dns_name: overcloud
+- network: external
+  subnet: external_subnet
+  dns_name: overcloud
+- network: tenant
+  subnet: tenant_subnet
+- network: ctlplane
+  dns_name: overcloud
+  subnet: ctlplane-subnet
+
