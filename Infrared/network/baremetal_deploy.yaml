@@ -24,7 +24,7 @@
       - network: tenant
         subnet: tenant_subnet
     network_config:
-      template: /home/stack/base_deployment/nic-configs/controller.j2
+      template: /home/stack/osp17_deployment/nic-configs/controller.j2
       default_route_network:
         - ctlplane
     config_drive:
@@ -52,7 +52,7 @@
       kernel: file:///var/lib/ironic/images/overcloud-full.vmlinuz
       ramdisk: file:///var/lib/ironic/images/overcloud-full.initrd
     network_config:
-      template: /home/stack/base_deployment/nic-configs/computeovsdpdk.yaml
+      template: /home/stack/osp17_deployment/nic-configs/computeovsdpdk.yaml
     config_drive:
       cloud_config:
         ssh_pwauth: true

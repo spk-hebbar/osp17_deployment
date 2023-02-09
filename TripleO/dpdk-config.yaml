@@ -1,0 +1,30 @@
+# ~/dpdk-config.yaml
+---
+parameter_defaults:
+  ComputeOvsDpdkParameters:
+    # These settings are copied from ~/baremetal_deployment_dpdk.yaml
+    # They need to be duplicated here to avoid reboots and also to be able to update
+    # them if needed.
+    KernelArgs: default_hugepagesz=1GB hugepagesz=1G hugepages=160 intel_iommu=on iommu=pt isolcpus=4-23,28-47
+    IsolCpusList: "4-23,28-47"
+    OvsDpdkSocketMemory: "2048,2048"
+    OvsDpdkMemoryChannels: 4
+    OvsPmdCoreList: "4-7,28-31"
+    # Configure nova to allow scheduling vms on isolated cores that are used neither
+    # by the kernel nor by ovs.
+    NovaReservedHostMemory: "4096"
+    NovaComputeCpuSharedSet: "0-3,24-27"
+    NovaComputeCpuDedicatedSet: "8-23,32-47"
+    # An array of filters used by Nova to filter a node. These filters will be
+    # applied in the order they are listed. By default, there is no filter at all
+    # and any vm can be scheduled on any compute node.
+    NovaSchedulerEnabledFilters:
+      - AvailabilityZoneFilter
+      - ComputeFilter
+      - ComputeCapabilitiesFilter
+      - ImagePropertiesFilter
+      - ServerGroupAntiAffinityFilter
+      - ServerGroupAffinityFilter
+      - PciPassthroughFilter
+      - NUMATopologyFilter
+

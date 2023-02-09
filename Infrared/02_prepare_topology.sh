@@ -14,14 +14,14 @@ RELEASE=$1
 SERVER=$2
 ARGS="${@:3}"
 
-#git clone base_deployment
+#git clone osp17_deployment
 
 
 
 cd /root
 
 #Update VLAN_id in network_data.yaml file
-awk -v var=100 'BEGIN{x=var+1;FS="\\n"}/vlan:/{gsub(/vlan:.*/,"vlan: "x++)} {print}' /root/base_deployment/network/network_data.yaml > network_data.yaml
+#awk -v var=100 'BEGIN{x=var+1;FS="\\n"}/vlan:/{gsub(/vlan:.*/,"vlan: "x++)} {print}' /root/osp17_deployment/network/network_data.yaml > network_data.yaml
 
 # Modify based on OSP release changes
 #####################################
@@ -73,13 +73,13 @@ curl -s --head $IMG | grep -q "200 OK"
 echo "Base OS Image used - ${IMG}"
 ##############################################################################
 
-UCIDR=`cat base_deployment/undercloud.conf |grep ^local_ip|awk 'BEGIN{FS=OFS="="} {print $2}'|sed "s/ //g"`
+UCIDR=`cat osp17_deployment/undercloud.conf |grep ^local_ip|awk 'BEGIN{FS=OFS="="} {print $2}'|sed "s/ //g"`
 UIP=${UCIDR%/*}
 UIP_PREFIX=${UIP%.*}
 
 CNTRL_ARGS=" -e  override.networks.net1.ip_address=${UIP_PREFIX}.150 "
 
-ECIDR=$(cat network_data.yaml |awk 'BEGIN{RS="-";FS=""}{print}'|awk -v var="name_lower: external" 'BEGIN{RS="\\n\\n";FS="\\n"} $0~var{print }'|awk 'BEGIN{FS="";}/ip_subnet:/{print}'|awk 'BEGIN{FS=OFS=":"} {print $2}'|sed "s/'//g"|sed "s/ //g")
+ECIDR=$(cat osp17_deployment/network/network_data.yaml |awk 'BEGIN{RS="-";FS=""}{print}'|awk -v var="name_lower: external" 'BEGIN{RS="\\n\\n";FS="\\n"} $0~var{print }'|awk 'BEGIN{FS="";}/ip_subnet:/{print}'|awk 'BEGIN{FS=OFS=":"} {print $2}'|sed "s/'//g"|sed "s/ //g")
 EIP=${ECIDR%/*}
 EIP=${EIP%.*}
 NET_ARGS=" -e  override.networks.net4.ip_address=$EIP.1 -e  override.networks.net4.dhcp.range.start=$EIP.2  -e  override.networks.net4.dhcp.range.end=$EIP.100  -e  override.networks.net4.dhcp.subnet_cidr=$EIP.0/24  -e  override.networks.net4.dhcp.subnet_gateway=$EIP.1   -e  override.networks.net4.floating_ip.start=$EIP.101 -e  override.networks.net4.floating_ip.end=$EIP.151 "

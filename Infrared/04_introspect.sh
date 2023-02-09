@@ -14,7 +14,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 RELEASE=$1
-THT_PATH=base_deployment
+THT_PATH=osp17_deployment
 SERVER=`hostname`
 
 BOOT_MODE='bios'

@@ -1,0 +1,15 @@
+parameter_defaults:
+  ContainerFrrImage: undercloud-director.ctlplane.localdomain:8787/cloudbgp/openstack-frr:latest
+  ContainerOvnBgpAgentImage: undercloud-director.ctlplane.localdomain:8787/cloudbgp/openstack-bgp-agent:latest
+
+  FrrBfdEnabled: true
+  FrrBgpEnabled: true
+  FrrBgpAsn: 64999
+  FrrBgpIpv4AllowASIn: true
+  FrrBgpIpv6AllowASIn: true
+#  FrrBgpUplinks: ['nic2', 'nic3']
+  FrrBgpUplinksScope: internal
+  FrrLogLevel: debugging
+
+  FrrOvnBgpAgentDriver: 'ovn_bgp_driver'
+

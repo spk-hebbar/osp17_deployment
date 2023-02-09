@@ -1,0 +1,124 @@
+# baremetal_deploy_compute_sriov.yaml
+---
+- name: Controller  # must match a role name in ~/roles_data.yaml
+  count: 1
+  defaults:
+    # by default, the image is uefi based, force the bios kind
+    image:
+      href: file:///var/lib/ironic/images/overcloud-full.raw
+      kernel: file:///var/lib/ironic/images/overcloud-full.vmlinuz
+      ramdisk: file:///var/lib/ironic/images/overcloud-full.initrd
+    # We are using "network isolation". The list of networks *MUST* be listed *AGAIN*
+    # here otherwise the baremetal provisioning will fail with obscure timeouts.
+    networks:
+      - network: ctlplane
+        vif: true
+      - network: internal_api
+        subnet: internal_api_subnet
+      - network: tenant
+        subnet: tenant_subnet
+      - network: storage
+        subnet: storage_subnet
+      - network: storage_mgmt
+        subnet: storage_mgmt_subnet
+    network_config:
+      # need to use absolute paths
+      template: /home/stack/osp17_deployment/TripleO/nic-configs/controller_no_external.j2
+      default_route_network:
+        - ctlplane
+    config_drive:
+      # cloud init config to allow ssh connections with a password
+      cloud_config:
+        ssh_pwauth: true
+        disable_root: false
+        chpasswd:
+          list: 'root:redhat'
+          expire: false
+  instances:
+    - hostname: controller-0
+      name: overcloud-controller  # must match a node in ~/instack.json
+
+- name: Compute
+  count: 1
+  hostname_format: compute-%index%
+  defaults:
+    profile: computebaremetal
+    image:
+      href: file:///var/lib/ironic/images/overcloud-full.raw
+      kernel: file:///var/lib/ironic/images/overcloud-full.vmlinuz
+      ramdisk: file:///var/lib/ironic/images/overcloud-full.initrd
+    networks:
+    - network: ctlplane
+      vif: true
+    - network: internal_api
+      subnet: internal_api_subnet
+    - network: tenant
+      subnet: tenant_subnet
+    - network: storage
+      subnet: storage_subnet
+    network_config:
+      template: /home/stack/osp17_deployment/TripleO/nic-configs/multiple_nics_vlans.j2
+      default_route_network:
+      - ctlplane
+    config_drive:
+      cloud_config:
+        ssh_pwauth: true
+        disable_root: false
+        chpasswd:
+          list: |-
+            root:redhat
+          expire: False
+  instances:
+    - hostname: compute-0
+      name: compute-0  # must match a node in ~/instack.json
+
+- name: ComputeSriov
+  count: 1
+  hostname_format: computesriov-%index%
+  defaults:
+    profile: computebaremetal
+    image:
+      href: file:///var/lib/ironic/images/overcloud-full.raw
+      kernel: file:///var/lib/ironic/images/overcloud-full.vmlinuz
+      ramdisk: file:///var/lib/ironic/images/overcloud-full.initrd
+    networks:
+    - network: ctlplane
+      vif: true
+    - network: internal_api
+      subnet: internal_api_subnet
+    - network: tenant
+      subnet: tenant_subnet
+    - network: storage
+      subnet: storage_subnet
+    network_config:
+      template: /home/stack/osp17_deployment/TripleO/nic-configs/multiple_nics_vlans_sriov.j2
+      default_route_network:
+      - ctlplane
+    config_drive:
+      cloud_config:
+        ssh_pwauth: true
+        disable_root: false
+        chpasswd:
+          list: |-
+            root:redhat
+          expire: False
+  ansible_playbooks:
+    - playbook: /usr/share/ansible/tripleo-playbooks/cli-overcloud-node-kernelargs.yaml
+      extra_vars:
+        kernel_args: 'default_hugepagesz=1GB hugepagesz=1G hugepages=100 amd_iommu=on iommu=pt isolcpus=4-23,28-47'
+        tuned_isolated_cores: '4-23,28-47'
+        tuned_profile: 'cpu-partitioning'
+        reboot_wait_timeout: 1800
+  instances:
+   - hostname: computesriov-1
+     name: compute-1  # must match a node in ~/instack.json
+     networks:
+     - network: ctlplane
+       vif: true
+     - network: internal_api
+       subnet: internal_api_subnet
+     - network: tenant
+       subnet: tenant_subnet
+     - network: storage
+       subnet: storage_subnet
+

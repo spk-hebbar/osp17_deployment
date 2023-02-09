@@ -10,14 +10,14 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-RELEASE=17.1
+RELEASE=$1
 BUILD=passed_phase1
 SERVER=`hostname`
 
 cd /root/infrared
 source .venv/bin/activate
 
-cp /root/base_deployment/undercloud.conf /root/infrared/undercloud.conf
+cp /root/osp17_deployment/undercloud.conf /root/infrared/undercloud.conf
 
 SSL=""
 REPO=""

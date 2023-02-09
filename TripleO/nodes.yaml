@@ -1,0 +1,33 @@
+# ~/nodes.yaml
+---
+nodes:
+  - name: overcloud-controller  # the name is required but does not matter
+    # vbmc that we started earlier
+    pm_addr: 172.16.0.1
+    pm_port: 6230
+    pm_user: admin
+    pm_password: admin
+    pm_type: ipmi
+    ports:
+      - address: "52:54:00:ca:ca:01"  # fixed mac address defined earlier
+        physical_network: ctlplane
+
+  - name: compute-0
+    pm_addr: 10.9.20.139
+    pm_port: 623
+    pm_user: root
+    pm_password: calvin
+    pm_type: ipmi
+    ports:
+      - address: "E4:43:4B:4D:ED:B9"  # eno4
+        physical_network: ctlplane
+
+  - name: compute-1
+    pm_addr: 10.9.20.140
+    pm_port: 623
+    pm_user: root
+    pm_password: calvin
+    pm_type: ipmi
+    ports:
+      - address: "E4:43:4B:4D:D4:CB"  # eno4
+        physical_network: ctlplane

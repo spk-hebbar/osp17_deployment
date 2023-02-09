@@ -6,10 +6,10 @@ resource_registry:
   OS::TripleO::Services::CinderBackendDellPs: OS::Heat::None
 
 parameter_defaults:
-        #  ControllerNetworkConfigTemplate: '/home/stack/osp17_ref/nic-configs/controller.j2'
-        #ComputeNetworkConfigTemplate: '/home/stack/osp17_ref/nic-configs/computeovsdpdksriov.j2'
-  ComputeOvsDpdkNetworkConfigTemplate: '/home/stack/osp17_ref/nic-configs/computeovsdpdk.yaml'
-  ControllerNetworkConfigTemplate : '/home/stack/osp17_ref/nic-configs/controller.yaml'
+        #  ControllerNetworkConfigTemplate: '/home/stack/osp17_deployment/nic-configs/controller.j2'
+        #ComputeNetworkConfigTemplate: '/home/stack/osp17_deployment/nic-configs/computeovsdpdksriov.j2'
+  ComputeOvsDpdkNetworkConfigTemplate: '/home/stack/osp17_deployment/nic-configs/computeovsdpdk.yaml'
+  ControllerNetworkConfigTemplate : '/home/stack/osp17_deployment/nic-configs/controller.j2'
 #  OS::TripleO::ControllerSriov::Net::SoftwareConfig: network/nic-configs/controller.j2
 
   NeutronTunnelTypes: 'geneve'

@@ -38,12 +38,12 @@
     "pm_user": "root"
 }      ,    {
       "name": "controller-0",
-                  "ports": [{"address": "52:54:00:9c:f6:b0", "local_link_connection": {"switch_id": "52:54:00:00:00:00", "port_id": "1"}}],
+                  "ports": [{"address": "52:54:00:ca:ca:01", "local_link_connection": {"switch_id": "52:54:00:00:00:00", "port_id": "1"}}],
             "cpu": "4",
       "memory": "10240",
       "disk": "64",
             "arch": "x86_64",
-              "pm_addr": "172.22.0.1",
+              "pm_addr": "172.16.0.1",
         "pm_type": "ipmi",
         "pm_user": "admin",
         "pm_password": "password",

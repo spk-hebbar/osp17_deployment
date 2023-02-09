@@ -1,0 +1,36 @@
+{
+  "nodes": [
+  {
+    "name": "compute-1",
+    "pm_addr": "10.9.20.140",
+    "mac": [
+        "E4:43:4B:4D:D4:CB"
+    ],
+    "pm_type": "ipmi",
+    "pm_port": "623",
+    "pm_user": "root",
+    "pm_password": "calvin",
+    "capabilities":
+    {
+      "boot_mode":"bios",
+      "boot_option":"local",
+      "profile":"computebaremetal"
+    }
+  },
+  {
+      "name": "overcloud-controller",
+      "pm_addr": "192.168.122.1",
+      "mac": [
+        "52:54:00:ca:ca:01"
+      ],
+      "pm_type": "ipmi",
+      "pm_port": "6230",
+      "pm_user": "admin",
+      "pm_password": "admin",
+      "capabilities":
+       {
+               "profile":"control"
+       }
+     }
+   ]
+}

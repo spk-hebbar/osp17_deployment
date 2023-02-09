@@ -1,0 +1,61 @@
+# ~/multiple_nics_vlans_dpdk.j2
+---
+network_config:
+- type: interface
+  name: eno3
+  use_dhcp: false
+  defroute: false  # eno3 is completely disabled in our setup
+
+- type: interface
+  name: eno4
+  mtu: {{ ctlplane_mtu }}
+  dns_servers: {{ ctlplane_dns_nameservers }}
+  domain: {{ dns_search_domains }}
+  routes: {{ ctlplane_host_routes }}
+  use_dhcp: false
+  addresses:
+  - ip_netmask: {{ ctlplane_ip }}/{{ ctlplane_subnet_cidr }}
+
+{% for network in networks_all if network not in networks_skip_config %}
+{% if network not in ["External", "Tenant"] and network in role_networks %}
+- type: vlan
+  device: eno4
+  mtu: {{ lookup('vars', networks_lower[network] ~ '_mtu') }}
+  use_dhcp: false
+  vlan_id: {{ lookup('vars', networks_lower[network] ~ '_vlan_id') }}
+  addresses:
+  - ip_netmask:
+      {{ lookup('vars', networks_lower[network] ~ '_ip') }}/{{ lookup('vars', networks_lower[network] ~ '_cidr') }}
+  routes: {{ lookup('vars', networks_lower[network] ~ '_host_routes') }}
+{% endif %}
+{% endfor %}
+
+- type: ovs_user_bridge
+  name: br-eno1
+  use_dhcp: false
+  mtu: 9000
+  # Add the tenant vlan tag directly on the bridge to avoid creation of a linux
+  # vlan interface by os-net-config. This allows provider networks (other VLAN
+  # ids) to be allowed on the physical interface and not interfere with the
+  # tenant VLAN id.
+  ovs_extra: set port br-eno1 tag={{ lookup('vars', 'tenant_vlan_id') }}
+  addresses:
+  - ip_netmask:
+      {{ lookup('vars', 'tenant_ip') }}/{{ lookup('vars', 'tenant_cidr') }}
+  routes: {{ lookup('vars', 'tenant_host_routes') }}
+  members:
+  - type: ovs_dpdk_port
+    name: dpdk-eno1
+    rx_queue: 4
+    members:
+    - type: interface
+      name: eno1
+      mtu: 9000
+      primary: true  # use the same MAC address in the bridge
+      use_dhcp: false
+
+- type: interface
+  name: eno2
+  use_dhcp: false
+  defroute: false  # eno2 is completely disabled in our setup
+

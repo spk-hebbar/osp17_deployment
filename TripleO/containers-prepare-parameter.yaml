@@ -1,0 +1,32 @@
+# containers-prepare-parameter.yaml
+---
+parameter_defaults:
+  ContainerImagePrepare:
+  - push_destination: true  # download images in the undercloud local registry
+    set:
+      # red hat internal registry
+      namespace: registry-proxy.engineering.redhat.com/rh-osbs
+      # development container images have different names
+      name_prefix: rhosp17-openstack-
+      name_suffix: ''
+      tag: '17.0_20220908.1'
+      # the rest is only used for overcloud deployment, the same file is reused
+      neutron_driver: ovn
+      rhel_containers: false
+      ceph_namespace: registry-proxy.engineering.redhat.com/rh-osbs
+      ceph_image: rhceph
+      ceph_tag: 5-287
+      ceph_alertmanager_image: openshift-ose-prometheus-alertmanager
+      ceph_alertmanager_namespace: registry-proxy.engineering.redhat.com/rh-osbs
+      ceph_alertmanager_tag: v4.10
+      ceph_grafana_image: grafana
+      ceph_grafana_namespace: registry-proxy.engineering.redhat.com/rh-osbs
+      ceph_grafana_tag: latest
+      ceph_node_exporter_image: openshift-ose-prometheus-node-exporter
+      ceph_node_exporter_namespace: registry-proxy.engineering.redhat.com/rh-osbs
+      ceph_node_exporter_tag: v4.10
+      ceph_prometheus_image: openshift-ose-prometheus
+      ceph_prometheus_namespace: registry-proxy.engineering.redhat.com/rh-osbs
+      ceph_prometheus_tag: v4.10
+    tag_from_label: '{version}-{release}'
+

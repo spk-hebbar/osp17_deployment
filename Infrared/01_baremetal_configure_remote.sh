@@ -9,11 +9,11 @@ yum install -y git python3 libselinux-python3 patch tmux wget
 yes|ssh-keygen -t rsa -q -f "$HOME/.ssh/id_rsa" -N ""
 cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
 
-if [ -d infrared ]; then
-    rm -rf infrared
+if [ -d /root/infrared ]; then
+    rm -rf /root/infrared
 fi
-git clone https://github.com/redhat-openstack/infrared.git
-cd infrared/
+git clone https://github.com/redhat-openstack/infrared.git /root/infrared
+cd /root/infrared/
 
 if [ -d .venv ]; then
     rm -rf .venv

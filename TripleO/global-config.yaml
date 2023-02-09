@@ -1,0 +1,7 @@
+# ~/global-config.yaml
+---
+parameter_defaults:
+  # repeat the cloud-init parameters from ~/baremetal_deployment_dpdk.yaml
+  PasswordAuthentication: 'yes'
+  SshFirewallAllowAll: true
+  NodeRootPassword: 'redhat'
