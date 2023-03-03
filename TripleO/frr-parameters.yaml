@@ -1,0 +1,11 @@
+parameter_defaults:
+  ContainerFrrImage: registry-proxy.engineering.redhat.com/rh-osbs/rhosp17-openstack-frr:17.0.1
+  ContainerOvnBgpAgentImage: registry-proxy.engineering.redhat.com/rh-osbs/rhosp17-openstack-ovn-bgp-agent:17.0.1
+  FrrBfdEnabled: true
+  FrrBgpEnabled: true
+  FrrBgpAsn: 64999
+  FrrBgpIpv4AllowASIn: true
+  FrrBgpIpv6AllowASIn: true
+#  FrrBgpUplinks: ['nic2', 'nic3']
+  FrrBgpUplinksScope: internal
+  FrrLogLevel: debugging

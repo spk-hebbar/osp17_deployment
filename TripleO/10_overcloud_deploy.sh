@@ -1,5 +1,7 @@
 source ~/stackrc
 
+openstack overcloud delete overcloud -y
+
 BUILTINS=/usr/share/openstack-tripleo-heat-templates/environments
 
 set --
@@ -49,7 +51,13 @@ set -- "$@" -e /home/stack/osp17_deployment/TripleO/global-config.yaml
 set -- "$@" -e ~/templates/overcloud-baremetal-deployed.yaml
 
 # Provide settings for ovn-bgp-agent to work
+#set -- "$@" -e $BUILTINS/services/frr.yaml
+#set -- "$@" -e /usr/share/openstack-tripleo-heat-templates/deployment/frr/frr-container-ansible.yaml
+#set -- "$@" -e /home/stack/osp17_deployment/TripleO/frr-parameters.yaml
+set -- "$@" -e /home/stack/osp17_deployment/TripleO/frr.yaml
+#set -- "$@" -e /home/stack/osp17_deployment/TripleO/podman-insecure-registries.yaml
 set -- "$@" -e /home/stack/osp17_deployment/TripleO/bgp_environment.yaml
-
+set -- "$@" --disable-protected-resource-types
+#set -- "$@" -e /home/stack/templates/overcloud_images.yaml
 # run the actual deployment using all args
 openstack overcloud deploy "$@"

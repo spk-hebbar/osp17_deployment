@@ -1,0 +1,5 @@
+parameter_defaults:
+  ContainerCLI: podman
+  PodmanInsecureRegistryAddress:
+    - registry-proxy.engineering.redhat.com
+  tripleo_container_registry_insecure: true

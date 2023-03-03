@@ -1,7 +1,10 @@
 parameter_defaults:
-  ContainerFrrImage: undercloud-director.ctlplane.localdomain:8787/cloudbgp/openstack-frr:latest
-  ContainerOvnBgpAgentImage: undercloud-director.ctlplane.localdomain:8787/cloudbgp/openstack-bgp-agent:latest
-
+  #  ContainerFrrImage: registry-proxy.engineering.redhat.com/rh-osbs/rhosp17-openstack-frr:17.0.1
+  #  ContainerOvnBgpAgentImage: registry-proxy.engineering.redhat.com/rh-osbs/rhosp17-openstack-ovn-bgp-agent:17.0.1
+  ContainerFrrImage: undercloud.ctlplane.localdomain:8787/rh-osbs/rhosp17-openstack-frr:17.0
+  ContainerOvnBgpAgentImage: undercloud.ctlplane.localdomain:8787/rh-osbs/rhosp17-openstack-ovn-bgp-agent:17.0
+  
+  FrrOvnBgpAgentDriver: 'ovn_bgp_driver'
   FrrBfdEnabled: true
   FrrBgpEnabled: true
   FrrBgpAsn: 64999
@@ -10,6 +13,4 @@ parameter_defaults:
 #  FrrBgpUplinks: ['nic2', 'nic3']
   FrrBgpUplinksScope: internal
   FrrLogLevel: debugging
-
-  FrrOvnBgpAgentDriver: 'ovn_bgp_driver'
 
