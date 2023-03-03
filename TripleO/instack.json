@@ -19,9 +19,9 @@
   },
   {
     "name": "compute-1",
-    "pm_addr": "10.9.20.140",
+    "pm_addr": "10.9.20.143",
     "mac": [
-        "E4:43:4B:4D:D4:CB"
+        "E4:43:4B:49:A9:97"
     ],
     "pm_type": "ipmi",
     "pm_port": "623",

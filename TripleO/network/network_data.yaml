@@ -31,14 +31,23 @@
         - start: 172.16.2.4
           end: 172.16.2.250
       vlan: 113
-- name: Tenant
-  vip: false  # Tenant network does not use VIPs
+- name: MainNetwork
+  vip: true
   mtu: 1500
-  name_lower: tenant
+  name_lower: main_network
   subnets:
-    tenant_subnet:
-      ip_subnet: 172.16.4.0/24
+    main_network_subnet:
+      ip_subnet: 192.100.99.0/24
       allocation_pools:
-        - start: 172.16.4.4
-          end: 172.16.4.250
+        - start: 192.100.99.4
+          end: 192.100.99.250
       vlan: 104 #From the switch ex5200
+- name: MainNetworkIPv6
+  name_lower: main_network_ipv6
+  vip: true
+  ipv6: true
+  subnets:
+    main_network_ipv6_subnet:
+      ipv6_subnet: 'f00d:f00d:f00d:f00d:f00d:f00d:f00d:0000/124'
+      vlan: 105
+

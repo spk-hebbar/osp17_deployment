@@ -6,6 +6,16 @@ network_config:
   defroute: false
 
 - type: interface
+  name: eno1
+  use_dhcp: false
+  mtu: 9000
+  address:
+  - ip_netmask:
+      {{ lookup('vars', 'main_network_ip') }}/24
+  - ip_netmask:
+      {{ lookup('vars', 'main_network_ipv6_ip') }}/64
+
+- type: interface
   name: eno4
   mtu: {{ ctlplane_mtu }}
   dns_servers: {{ ctlplane_dns_nameservers }}
@@ -30,27 +40,11 @@ network_config:
 {% endfor %}
 
 - type: ovs_bridge
-  name: br-link0
-  use_dhcp: false
+  name: br-provider1
   mtu: 9000
-  ovs_extra: set port br-link0 tag={{ lookup('vars', 'tenant_vlan_id') }}
-  addresses:
-  - ip_netmask:
-      {{ lookup('vars', 'tenant_ip') }}/{{ lookup('vars', 'tenant_cidr') }}
-  routes: {{ lookup('vars', 'tenant_host_routes') }}
-  members:
-  - type: interface
-    name: eno1
-    mtu: 9000
-    primary: true
-    use_dhcp: false
+  use_dhcp: false
 
 - type: ovs_bridge
-  name: br-link1
-  members:
-  - type: interface
-    name: eno2
-    mtu: 9000
-    primary: true
-    use_dhcp: false
-
+  name: br-provider2
+  mtu: 9000
+  use_dhcp: false

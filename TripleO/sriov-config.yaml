@@ -4,29 +4,28 @@ resource_registry:
 
 
 parameter_defaults:
-  OvercloudComputeSriovFlavor: computebaremetal
+    OvercloudComputeSriovFlavor: computebaremetal
+    NeutronNetworkVLANRanges: 'datacentre1:109:115,datacentre2:116:119'
+    NeutronBridgeMappings: 'datacentre1:br-provider1,datacentre2:br-provider2'
 
-  ComputeSriovParameters:
-    IsolCpusList: 4-23,28-47
-      #    KernelArgs: default_hugepagesz=1GB hugepagesz=1G hugepages=100 amd_iommu=on iommu=pt
-      # numa_balancing=disable processor.max_cstate=0 isolcpus=4-23,28-47
-    NovaReservedHostMemory: 4096
-    NovaComputeCpuSharedSet: 0-4,24-27
-    NovaComputeCpuDedicatedSet: 4-23,28-47
+    ComputeSriovParameters:
+      IsolCpusList: 4-23,28-47
+      KernelArgs: default_hugepagesz=1GB hugepagesz=1G hugepages=100 amd_iommu=on iommu=pt numa_balancing=disable processor.max_cstate=0 isolcpus=4-23,28-47
+      NovaReservedHostMemory: 4096
+      NovaComputeCpuSharedSet: 0-3,24-27
+      NovaComputeCpuDedicatedSet: 4-23,28-47
 
-    NeutronPhysicalDevMappings: "sriov-phy1:eno1,sriov-phy2:eno2"
-
-    #DerivePciWhitelistEnabled: true
-    NovaPCIPassthrough:
-      - devname: "eno1"
-        trusted: "true"
-        physical_network: "sriov-phy1"
-        #vendor_id: "15b3"
-        #product_id: "1018"
-      - devname: "eno2"
-        trusted: "true"
-        physical_network: "sriov-phy2"
-        #vendor_id: "15b3"
-        #product_id: "1018"
-    NeutronSriovAgentExtensions: "qos"
+      #DerivePciWhitelistEnabled: true
+      NovaPCIPassthrough:
+        - devname: "eno1"
+          trusted: "true"
+          physical_network: "datacentre1"
+          #vendor_id: "15b3"
+          #product_id: "1018"
+        - devname: "eno2"
+          trusted: "true"
+          physical_network: "datacentre2"
+          #vendor_id: "15b3"
+          #product_id: "1018"
+      NeutronSriovAgentExtensions: "qos"
 

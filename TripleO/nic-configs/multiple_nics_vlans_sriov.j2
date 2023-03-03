@@ -32,8 +32,13 @@ network_config:
 - type: sriov_pf
   name: eno1
   mtu: 9000
-  numvfs: 16
+  numvfs: 4
   use_dhcp: false
+  addresses:
+  - ip_netmask:
+      {{ lookup('vars', 'main_network_ip') }}/24
+  - ip_netmask:
+      {{ lookup('vars', 'main_network_ipv6_ip') }}/64
   defroute: false
   nm_controlled: true
   hotplug: true
@@ -42,7 +47,7 @@ network_config:
 - type: sriov_pf
   name: eno2
   mtu: 9000
-  numvfs: 16
+  numvfs: 4
   use_dhcp: false
   defroute: false
   nm_controlled: true
@@ -50,14 +55,9 @@ network_config:
   promisc: false
 
 - type: ovs_bridge
-  name: br-link0
+  name: br-provider1
   use_dhcp: false
   mtu: 9000
-  ovs_extra: set port br-link0 tag={{ lookup('vars', 'tenant_vlan_id') }}
-  addresses:
-  - ip_netmask:
-      {{ lookup('vars', 'tenant_ip') }}/{{ lookup('vars', 'tenant_cidr') }}
-  routes: {{ lookup('vars', 'tenant_host_routes') }}
   members:
   - type: sriov_vf
     device: eno1
@@ -67,7 +67,7 @@ network_config:
     use_dhcp: false
 
 - type: ovs_bridge
-  name: br-link1
+  name: br-provider2
   members:
   - type: sriov_vf
     device: eno2
