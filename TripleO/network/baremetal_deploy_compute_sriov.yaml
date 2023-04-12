@@ -95,7 +95,7 @@
     - network: main_network
       subnet: main_network_subnet
     - network: main_network_ipv6
-      subnet: main_network_ipv6_subnet 
+      subnet: main_network_ipv6_subnet
     network_config:
       template: /home/stack/osp17_deployment/TripleO/nic-configs/multiple_nics_vlans_sriov.j2
       default_route_network:
@@ -111,7 +111,7 @@
   ansible_playbooks:
     - playbook: /usr/share/ansible/tripleo-playbooks/cli-overcloud-node-kernelargs.yaml
       extra_vars:
-        kernel_args: 'default_hugepagesz=1GB hugepagesz=1G hugepages=100 intel_iommu=on iommu=pt isolcpus=4-23,28-47'
+        kernel_args: 'default_hugepagesz=2GB hugepagesz=2G hugepages=16 intel_iommu=on iommu=pt isolcpus=4-23,28-47'
         tuned_isolated_cores: '4-23,28-47'
         tuned_profile: 'cpu-partitioning'
         reboot_wait_timeout: 1800
@@ -129,5 +129,4 @@
        subnet: main_network_subnet
      - network: main_network_ipv6
        subnet: main_network_ipv6_subnet
- 
 

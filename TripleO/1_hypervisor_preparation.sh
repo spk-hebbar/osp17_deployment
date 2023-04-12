@@ -2,32 +2,38 @@
 systemctl disable --now avahi-daemon.socket
 systemctl disable --now avahi-daemon.service
 
-# prepare bridges for libvirt networks
-nmcli connection del eno4 eno1 br-ctrl br-user
-################## Method 1 #########################################
-for br in br-ctrl br-user; do
-    nmcli connection add con-name $br type bridge ifname $br \
-        ipv4.method disabled ipv6.method disabled
-done
-nmcli connection add con-name eno4 type ethernet ifname eno4 master br-ctrl
-nmcli connection add con-name eno1 type ethernet ifname eno1 master br-user
+#eno1 in hypervisor -- br-user1 bridge-- user1 network -- enp2s0 interface in controller
+#eno2 in hypervisor -- br-user2 bridge -- user2 network -- enp3s0 interface in controller
+#eno4 in hypervisor -- br-ctrl bridge -- ctrl network -- enp1s0 interface in controller
 
-for c in eno4 eno1 br-ctrl br-user; do
-   nmcli connection up $c
-done
+
+# prepare bridges for libvirt networks
+#nmcli connection del eno4 eno1 br-ctrl br-user
+################### Method 1 #########################################
+#for br in br-ctrl br-user; do
+#    nmcli connection add con-name $br type bridge ifname $br \
+#        ipv4.method disabled ipv6.method disabled
+#done
+#nmcli connection add con-name eno4 type ethernet ifname eno4 master br-ctrl
+#nmcli connection add con-name eno1 type ethernet ifname eno1 master br-user
+#
+#for c in eno4 eno1 br-ctrl br-user; do
+#   nmcli connection up $c
+#done
 #####################################################################
 
 ################# Method 2 ##########################################
-#for br in br-ctrl br-user; do
-#	ip link add name $br type bridge
-#done
-#
-#ip link set eno4 master br-ctrl
-#ip link set eno1 master br-user
-#
-#for c in eno4 eno1 br-ctrl br-user; do
-#	ip link set $c up
-#done
+for br in br-ctrl br-user1 br-user2; do
+	ip link add name $br type bridge
+done
+
+ip link set eno4 master br-ctrl
+ip link set eno1 master br-user1
+ip link set eno2 master br-user2
+
+for c in eno4 eno1 eno2 br-ctrl br-user1 br-user2; do
+	ip link set $c up
+done
 #####################################################################
 
 ################ Method 3 ###########################################
@@ -62,10 +68,17 @@ cat > /tmp/ctlplane.xml <<EOF
   <forward mode="bridge"/>
 </network>
 EOF
-cat > /tmp/user.xml <<EOF
+cat > /tmp/user1.xml <<EOF
 <network>
-  <name>user</name>
-  <bridge name="br-user"/>
+  <name>user1</name>
+  <bridge name="br-user1"/>
+  <forward mode="bridge"/>
+</network>
+EOF
+cat > /tmp/user2.xml <<EOF
+<network>
+  <name>user2</name>
+  <bridge name="br-user2"/>
   <forward mode="bridge"/>
 </network>
 EOF
@@ -74,12 +87,12 @@ EOF
 virsh net-destroy --network default
 virsh net-undefine --network default
 
-for net in management ctlplane user; do
+for net in management ctlplane user1 user2; do
     virsh net-destroy $net
     virsh net-undefine $net
 done
 
-for net in management ctlplane user; do
+for net in management ctlplane user1 user2; do
     virsh net-define "/tmp/$net.xml"
     virsh net-autostart $net
     virsh net-start $net

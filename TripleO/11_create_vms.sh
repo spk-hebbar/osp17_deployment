@@ -24,17 +24,16 @@ export LIBGUESTFS_BACKEND=direct
 #--run-command "curl -L https://content.mellanox.com/ofed/MLNX_OFED-5.7-1.0.2.0/MLNX_OFED_LINUX-5.7-1.0.2.0-rhel8.6-x86_64.tgz | tar -C /root -zx" \
 #--run-command "cd /root/MLNX_OFED* && ./mlnxofetinstall --without-fw-update" \
 
-#TODO: Trex requires 2 SRIOV VFs to be passed,  how to do that?
 virt-customize -a trex.qcow2 "$@" \
     --install pciutils,driverctl,tmux,vim,python3,tuned-profiles-cpu-partitioning,tcpdump,httpd \
-    --run-command "curl -L https://trex-tgn.cisco.com/trex/release/v3.02.tar.gz | tar -C /root -zx && mv /root/v3.02 /root/trex" \
+    --run-command "curl -L -k https://trex-tgn.cisco.com/trex/release/v2.76.tar.gz | tar -C /root -zx && mv /root/v2.76 /root/trex" \
     --run-command "systemctl enable httpd  && sed -i 's/#PermitRootLogin/PermitRootLogin/' /etc/ssh/sshd_config" \
     --selinux-relabel
 
-#TODO: l3fwd requires 2 virtio interfaces, again how?
 virt-customize -a l3fwd.qcow2 "$@" \
-    --install pciutils,dpdk,dpdk-tools,python3,numactl-devel,tuned-profiles-cpu-partitioning,driverctl,vim,tmux,tcpdump,httpd \
+    --install pciutils,dpdk,dpdk-tools,python3,numactl-devel,tuned-profiles-cpu-partitioning,driverctl,vim,tmux,tcpdump,httpd,meson,gcc,ninja-build,git,make \
     --run-command "systemctl enable httpd  && sed -i 's/#PermitRootLogin/PermitRootLogin/' /etc/ssh/sshd_config" \
+    --copy-in /usr/src/dpdk-stable-22.11.1:/root/ \
     --selinux-relabel
 
 #Copy the images to undercloud

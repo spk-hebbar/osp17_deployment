@@ -10,7 +10,7 @@ parameter_defaults:
 
     ComputeSriovParameters:
       IsolCpusList: 4-23,28-47
-      KernelArgs: default_hugepagesz=1GB hugepagesz=1G hugepages=100 amd_iommu=on iommu=pt numa_balancing=disable processor.max_cstate=0 isolcpus=4-23,28-47
+      KernelArgs: default_hugepagesz=2GB hugepagesz=2G hugepages=16 amd_iommu=on iommu=pt numa_balancing=disable processor.max_cstate=0 isolcpus=4-23,28-47
       NovaReservedHostMemory: 4096
       NovaComputeCpuSharedSet: 0-3,24-27
       NovaComputeCpuDedicatedSet: 4-23,28-47

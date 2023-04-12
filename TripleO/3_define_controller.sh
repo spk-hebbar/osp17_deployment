@@ -12,11 +12,12 @@ qemu-img create -f qcow2 $controller_img 80G
 virt-resize --expand /dev/sda4 \
         /var/lib/libvirt/images/rhel-guest-image-9.0.qcow2 $controller_img
 
-virt-install --ram 16384 --vcpus 2 --cpu host --os-variant rhel9.0 --import \
+virt-install --ram 16384 --vcpus 4 --cpu host --os-variant rhel9.0 --import \
     --graphics none --autoconsole none \
     --disk "path=$controller_img,device=disk,bus=virtio,format=qcow2" \
     --network network=ctlplane,mac=52:54:00:ca:ca:01 \
-    --network network=user \
+    --network network=user1 \
+    --network network=user2 \
     --name overcloud-controller \
     --dry-run --print-xml > controller.xml
 virsh define --file controller.xml
