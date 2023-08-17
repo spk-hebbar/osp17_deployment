@@ -27,11 +27,11 @@ for br in br-ctrl br-user1 br-user2; do
 	ip link add name $br type bridge
 done
 
-ip link set eno4 master br-ctrl
-ip link set eno1 master br-user1
-ip link set eno2 master br-user2
+ip link set eno2 master br-ctrl
+ip link set eno3 master br-user1
+ip link set eno4 master br-user2
 
-for c in eno4 eno1 eno2 br-ctrl br-user1 br-user2; do
+for c in eno2 eno3 eno4 br-ctrl br-user1 br-user2; do
 	ip link set $c up
 done
 #####################################################################
@@ -58,7 +58,7 @@ cat > /tmp/management.xml <<EOF
   <name>management</name>
   <ip address="192.168.122.1" prefix="24"/>
   <bridge name="br-mgmt"/>
-  <forward mode="nat" dev="eno3"/>
+  <forward mode="nat" dev="eno1"/>
 </network>
 EOF
 cat > /tmp/ctlplane.xml <<EOF

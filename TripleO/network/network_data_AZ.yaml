@@ -31,4 +31,15 @@
         - start: 172.16.2.4
           end: 172.16.2.250
       vlan: 113
+- name: Tenant
+  name_lower: tenant
+  vip: false
+  mtu: 1500
+  subnets:
+    tenant_subnet:
+      ip_subnet: 172.16.4.0/24
+      allocation_pools:
+        - start: 172.16.4.4
+          end: 172.16.4.250
+      vlan: 114
 

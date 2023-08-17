@@ -1,6 +1,6 @@
 <domain type="kvm">
-  <name>overcloud-controller</name>
-  <uuid>158dc5f8-14b8-400b-b0c5-7ebf8263c061</uuid>
+  <name>overcloud-compute-1</name>
+  <uuid>0436cde6-d984-4276-a1ce-0c77f1a43319</uuid>
   <metadata>
     <libosinfo:libosinfo xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">
       <libosinfo:os id="http://redhat.com/rhel/9.0"/>
@@ -8,7 +8,7 @@
   </metadata>
   <memory>16777216</memory>
   <currentMemory>16777216</currentMemory>
-  <vcpu>4</vcpu>
+  <vcpu>8</vcpu>
   <os>
     <type arch="x86_64" machine="q35">hvm</type>
     <boot dev="hd"/>
@@ -31,7 +31,7 @@
     <emulator>/usr/libexec/qemu-kvm</emulator>
     <disk type="file" device="disk">
       <driver name="qemu" type="qcow2"/>
-      <source file="/var/lib/libvirt/images/controller.qcow2"/>
+      <source file="/var/lib/libvirt/images/compute_1.qcow2"/>
       <target dev="vda" bus="virtio"/>
     </disk>
     <controller type="usb" model="qemu-xhci" ports="15"/>
@@ -52,17 +52,17 @@
     <controller type="pci" model="pcie-root-port"/>
     <interface type="network">
       <source network="ctlplane"/>
-      <mac address="52:54:00:ca:ca:01"/>
+      <mac address="52:54:00:ca:ca:03"/>
       <model type="virtio"/>
     </interface>
     <interface type="network">
       <source network="user1"/>
-      <mac address="52:54:00:59:a9:50"/>
+      <mac address="52:54:00:5e:a4:14"/>
       <model type="virtio"/>
     </interface>
     <interface type="network">
       <source network="user2"/>
-      <mac address="52:54:00:aa:f8:96"/>
+      <mac address="52:54:00:ba:ae:a2"/>
       <model type="virtio"/>
     </interface>
     <console type="pty"/>

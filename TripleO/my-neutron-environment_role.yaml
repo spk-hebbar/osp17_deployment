@@ -1,0 +1,11 @@
+parameter_defaults:
+  NeutronDefaultAvailabilityZones: 'az-datacenter2,az-datacenter1'
+  ControllerParameters:
+    OVNCMSOptions: 'enable-chassis-as-gw'
+    OVNAvailabilityZone: 'az-datacenter2,az-datacenter1'
+  ComputeAZ1Parameters:
+    #OVNCMSOptions: 'enable-chassis-as-gw'
+    OVNAvailabilityZone: 'az-datacenter1'
+  ComputeAZ2Parameters:
+    #OVNCMSOptions: 'enable-chassis-as-gw'
+    OVNAvailabilityZone: 'az-datacenter2'

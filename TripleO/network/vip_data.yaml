@@ -35,8 +35,4 @@
   dns_name: overcloud
 - network: ctlplane
   dns_name: overcloud
-- network: main_network
-  dns_name: overcloud
-- network: main_network_ipv6
-  dns_name: overcloud
 

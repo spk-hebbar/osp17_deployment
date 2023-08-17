@@ -1,0 +1,52 @@
+---
+{% set mtu_list = [ctlplane_mtu] %}
+{% for network in role_networks %}
+{{ mtu_list.append(lookup('vars', networks_lower[network] ~ '_mtu')) }}
+{% endfor %}
+{% set min_viable_mtu = mtu_list | max %}
+network_config:
+# First interface holds the control plane network "flat" (or native vlan)
+- type: interface
+  name: enp1s0
+  mtu: {{ min_viable_mtu }}
+  use_dhcp: false
+  dns_servers: {{ ctlplane_dns_nameservers }}
+  domain: {{ dns_search_domains }}
+  addresses:
+  - ip_netmask: {{ ctlplane_ip }}/{{ ctlplane_subnet_cidr }}
+  routes: {{ ctlplane_host_routes }}
+
+# We do not have any External network. The first interface gets every
+# OSP service networks. I chose to exclude these VLANs from OvS to avoid
+# connectivity interruption when the OvS daemon is restarted.
+{% for network in role_networks if network != "Tenant" %}
+{% set net = networks_lower[network] %}
+- type: vlan
+  device: enp1s0
+  mtu: {{ lookup('vars', net ~ '_mtu') }}
+  use_dhcp: false
+  vlan_id: {{ lookup('vars', net ~ '_vlan_id') }}
+  addresses:
+  - ip_netmask: {{ lookup('vars', net ~ '_ip') }}/{{ lookup('vars', net ~ '_cidr') }}
+  routes: {{ lookup('vars', net ~ '_host_routes') }}
+{% endfor %}
+
+# Tenant is confined on the second interface through an OvS bridge.
+# Tenant is confined on the second interface through an OvS bridge.
+- type: ovs_bridge
+  name: br-enp2s0
+  mtu: {{ min_viable_mtu }}
+  use_dhcp: false
+  # Add the tenant vlan tag directly on the bridge to avoid creation of a linux
+  # vlan interface by os-net-config. This allows provider networks (other VLAN
+  # ids) to be accepted on the physical interface and not interfere with the
+  # tenant VLAN id.
+  ovs_extra: set port br-enp2s0 tag={{ lookup('vars', 'tenant_vlan_id') }}
+  addresses:
+  - ip_netmask: {{ lookup('vars', 'tenant_ip') }}/{{ lookup('vars', 'tenant_cidr') }}
+  routes: {{ lookup('vars', 'tenant_host_routes') }}
+  members:
+  - type: interface
+    name: enp2s0
+    mtu: {{ min_viable_mtu }}
+    use_dhcp: false

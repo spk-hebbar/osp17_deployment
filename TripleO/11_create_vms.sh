@@ -33,7 +33,6 @@ virt-customize -a trex.qcow2 "$@" \
 virt-customize -a l3fwd.qcow2 "$@" \
     --install pciutils,dpdk,dpdk-tools,python3,numactl-devel,tuned-profiles-cpu-partitioning,driverctl,vim,tmux,tcpdump,httpd,meson,gcc,ninja-build,git,make \
     --run-command "systemctl enable httpd  && sed -i 's/#PermitRootLogin/PermitRootLogin/' /etc/ssh/sshd_config" \
-    --copy-in /usr/src/dpdk-stable-22.11.1:/root/ \
     --selinux-relabel
 
 #Copy the images to undercloud
